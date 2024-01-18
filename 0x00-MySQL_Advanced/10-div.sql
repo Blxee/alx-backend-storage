@@ -1,0 +1,4 @@
+-- 10. Safe divide
+CREATE FUNCTION SafeDiv (a INT, b INT)
+RETURNS FLOAT
+RETURN COALESCE(a / b, 0);
