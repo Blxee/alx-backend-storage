@@ -5,8 +5,10 @@ AFTER UPDATE
 ON users
 FOR EACH ROW
 BEGIN
-  UPDATE users
-  SET valid_email = 0
-  WHERE id = NEW.id;
+  IF NEW.email != OLD.email THEN
+    UPDATE users
+    SET valid_email = 0
+    WHERE id = NEW.id;
+  END IF;
 END;//
 DELIMITER ;
