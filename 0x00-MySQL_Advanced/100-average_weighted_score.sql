@@ -7,6 +7,8 @@ BEGIN
     FROM corrections
     JOIN users
     ON corrections.user_id = users.id
+    JOIN projects
+    ON corrections.project_id = projects.id
     WHERE corrections.user_id = user_id
     GROUP BY corrections.user_id;
   UPDATE users
