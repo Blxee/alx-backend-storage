@@ -1,4 +1,5 @@
 -- 3. Old school band
-select band_name, coalesce(split - formed, 0) as lifespan
-from metal_bands
-order by lifespan desc;
+SELECT band_name, coalesce(split, 2022) - formed AS lifespan
+FROM metal_bands
+WHERE style LIKE '%Glam rock%'
+ORDER BY lifespan DESC;
