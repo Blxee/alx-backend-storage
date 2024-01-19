@@ -7,7 +7,8 @@ BEGIN
   DECLARE total_scores FLOAT;
   DECLARE total_weights FLOAT;
 
-  SELECT SUM(weight) into total_weights, SUM(score * weight) INTO total_scores
+  SELECT SUM(weight), SUM(score * weight)
+    INTO total_weights, total_scores
     FROM corrections
     JOIN users
     ON corrections.user_id = users.id
