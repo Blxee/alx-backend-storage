@@ -3,11 +3,9 @@ DELIMITER //
 CREATE FUNCTION SafeDiv (a INT, b INT)
 RETURNS FLOAT
 BEGIN
-  DECLARE result FLOAT;
-  SET result = a / b;
-  IF result IS NULL THEN
-    SET result = 0;
+  IF b == 0 THEN
+    RETURN 0;
   END IF;
-  RETURN result;
+  RETURN a / b;
 END;//
 DELIMITER ;
