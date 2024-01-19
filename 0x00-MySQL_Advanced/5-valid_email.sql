@@ -1,7 +1,7 @@
 -- 5. Email validation to sent
 DELIMITER //
 CREATE TRIGGER reset_valid_email
-AFTER UPDATE
+BEFORE UPDATE
 ON users
 FOR EACH ROW
 BEGIN
