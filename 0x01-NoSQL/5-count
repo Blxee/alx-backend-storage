@@ -1,1 +1,2 @@
 //5. Count
+db.collection.countDocuments()
