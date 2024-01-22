@@ -1,2 +1,2 @@
 //3. All documents
-db.collection.find()
+db.school.find()

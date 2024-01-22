@@ -1,5 +1,5 @@
 //6. Update
-db.collection.updateMany(
+db.school.updateMany(
   {school: 'Holberton school'},
   {$set: {address: '972 Mission street'}}
 )
