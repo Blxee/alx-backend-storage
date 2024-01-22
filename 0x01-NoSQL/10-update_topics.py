@@ -10,4 +10,5 @@ def update_topics(mongo_collection, name, topics):
         name: the name of the schools to use in filter.
         topics: the new topics that the schools shuold be updated with.
     """
-    mongo_collection.update_many({'name': name}, {'topics': topics})
+    mongo_collection.update_many({'name': name},
+                                 {'$set': {'topics': topics}})
