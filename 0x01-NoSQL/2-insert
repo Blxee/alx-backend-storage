@@ -1,5 +1,4 @@
 //2. Insert document
-db.createCollection('school')
 db.school.insertOne({
   name: 'Holberton school'
 })
