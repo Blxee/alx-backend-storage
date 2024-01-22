@@ -1,1 +1,4 @@
 //4. All matches
+db.collection.find({
+  name='Holberton school'
+})
