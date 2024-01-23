@@ -11,7 +11,7 @@ if __name__ == '__main__':
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     for method in methods:
         print(f'\tmethod {method}:', coll.count_documents({'method': method}))
-    print(coll.count_documents({'method': 'GET', 'path': '/status'}))
+    print(coll.count_documents({'method': 'GET', 'path': '/status'}), 'status check')
     print('IPs:')
     most_present = list(coll.aggregate([{'$group': {'_id': '$ip', 'occurence': {'$count': {}}}}, {'$sort': {'occurence': -1}}]))[:10]
     for item in most_present:
