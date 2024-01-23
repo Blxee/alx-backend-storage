@@ -10,4 +10,4 @@ def top_students(mongo_collection):
     Returns:
        list: the resulted list.
     """
-    return list(mongo_collection.find().sort({'averageScore': -1}))
+    return list(mongo_collection.find({'_id': 1, 'name': 1, 'averageScore': {'$avg': '$topics.score'}}).sort({'averageScore': -1}))
