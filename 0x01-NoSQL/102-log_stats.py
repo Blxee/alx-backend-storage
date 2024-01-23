@@ -14,8 +14,5 @@ if __name__ == '__main__':
     print(coll.count_documents({'method': 'GET', 'path': '/status'}), 'status check')
     print('IPs:')
     most_present = list(coll.aggregate([{'$group': {'_id': '$ip', 'occurence': {'$count': {}}}}, {'$sort': {'occurence': -1}}, {'$limit': 10}]))
-    # this is a hack for the checker
-    # the numbers are equal but it wants me to sort in its liking D:
-    most_present[1], most_present[2] = most_present[2], most_present[1]
     for item in most_present:
         print(f'\t{item["_id"]}: {item["occurence"]}')
