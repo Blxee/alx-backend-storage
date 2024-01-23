@@ -1,2 +1,2 @@
 //5. Count
-db.school.countDocuments()
+db.school.countDocuments({})
