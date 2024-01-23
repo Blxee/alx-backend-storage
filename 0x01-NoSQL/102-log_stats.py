@@ -13,6 +13,6 @@ if __name__ == '__main__':
         print(f'\tmethod {method}:', coll.count_documents({'method': method}))
     print(coll.count_documents({'method': 'GET', 'path': '/status'}), 'status check')
     print('IPs:')
-    most_present = list(coll.aggregate([{'$group': {'_id': '$ip', 'occurence': {'$count': {}}}}, {'$sort': {'occurence': -1}}, {'limit': 10}]))
+    most_present = list(coll.aggregate([{'$group': {'_id': '$ip', 'occurence': {'$count': {}}}}, {'$sort': {'occurence': -1}}, {'$limit': 10}]))
     for item in most_present:
         print(f'\t{item["_id"]}: {item["occurence"]}')
