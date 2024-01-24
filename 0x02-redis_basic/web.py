@@ -17,9 +17,8 @@ def count_access(fn: Callable) -> Callable:
         redis.incr(count_key)
         data = redis.get(cache_key)
         if data:
-            return data
-        else:
-            data = fn(url, *args, **kwargs)
+            return data.decode()
+        data = fn(url, *args, **kwargs)
         redis.set(cache_key, data)
         redis.expire(cache_key, 10)
         return data
