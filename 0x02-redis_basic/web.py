@@ -3,7 +3,7 @@
 from functools import wraps
 import redis
 import requests
-from typing import Callable, Any
+from typing import Callable
 
 
 _redis = redis.Redis()
@@ -13,7 +13,7 @@ def count_access(fn: Callable) -> Callable:
     """Decorator function that adds caching for get_page"""
 
     @wraps(fn)
-    def wrapper(url, *args, **kwargs) -> Any:
+    def wrapper(url: str) -> str:
         """idk bruh just let me go to sleep"""
         count_key = 'count:' + url
         cache_key = 'cache:' + url
@@ -21,7 +21,7 @@ def count_access(fn: Callable) -> Callable:
         data = _redis.get(cache_key)
         if data:
             return data.decode()
-        data = fn(url, *args, **kwargs)
+        data = fn(url)
         _redis.setex(cache_key, 10, data)
         return data
     return wrapper
