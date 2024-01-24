@@ -7,6 +7,7 @@ from typing import Callable, Any
 
 
 def count_access(fn: Callable) -> Callable:
+    """Decorator function that adds caching for get_page"""
     redis = Redis()
 
     @wraps(fn)
