@@ -12,6 +12,7 @@ def count_access(fn: Callable) -> Callable:
 
     @wraps(fn)
     def wrapper(url, *args, **kwargs) -> Any:
+        """idk bruh just let me go to sleep"""
         count_key = 'count:' + url
         cache_key = 'cache:' + url
         redis.incr(count_key)

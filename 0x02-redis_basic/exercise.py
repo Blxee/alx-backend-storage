@@ -10,6 +10,7 @@ def count_calls(method: Callable) -> Callable:
     """Decorator function that counts calls of Cache method calls."""
     @wraps(method)
     def wrapper(self, *args, **kwargs) -> Any:
+        """why does this need docs?"""
         self._redis.incr(method.__qualname__)
         return method(self, *args, **kwargs)
     return wrapper
@@ -19,6 +20,7 @@ def call_history(method: Callable) -> Callable:
     """Decorator function that stores in and out of Cache method calls."""
     @wraps(method)
     def wrapper(self, *args, **kwargs) -> Any:
+        """it will be overwitten anyway"""
         input = str(args)
         output = method(self, *input, **kwargs)
         self._redis.rpush(method.__qualname__ + ':inputs', input)
