@@ -2,7 +2,7 @@
 """Main module for all mandatory tasks."""
 from functools import wraps
 from redis import Redis
-from typing import Any, Callable
+from typing import Any, Callable, Optional, Union
 from uuid import uuid4
 
 
@@ -33,10 +33,10 @@ def replay(fn: Callable) -> None:
     calls = int(redis.get(fn.__qualname__) or 0)
     print(fn.__qualname__, 'was called', calls, 'times')
     lst = zip(
-        redis.lrange(fn.__qualname__ + ':inputs', 0, calls),
-        redis.lrange(fn.__qualname__ + ':outputs', 0, calls))
+        redis.lrange(fn.__qualname__ + ':inputs', 0, -1),
+        redis.lrange(fn.__qualname__ + ':outputs', 0, -1))
     for inp, out in lst:
-        print(f'{fn.__qualname__}(*({inp})) -> {out}')
+        print(f'{fn.__qualname__}(*({inp.decode()})) -> {out.decode()}')
 
 
 class Cache:
@@ -53,17 +53,17 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable | None = None) -> Any | None:
+    def get(self, key: str, fn: Optional[Callable] = None) -> Optional[Any]:
         """Retrieves data from redis using a key, and a convertion function."""
         if fn:
             return fn(self._redis.get(key))
         else:
             return self._redis.get(key)
 
-    def get_str(self, key: str) -> str | None:
+    def get_str(self, key: str) -> Union[str, None]:
         "Retrieves a string from reddis"
         return self.get(key, str)
 
-    def get_int(self, key: str) -> int | None:
+    def get_int(self, key: str) -> Optional[int]:
         "Retrieves a int from reddis"
         return self.get(key, int)
