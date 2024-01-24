@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Main module for all mandatory tasks."""
 from functools import wraps
-from redis import Redis
+import redis
 from typing import Any, Callable, Optional, Union
 from uuid import uuid4
 
@@ -31,12 +31,12 @@ def call_history(method: Callable) -> Callable:
 
 def replay(fn: Callable) -> None:
     """Prints information about history of calls of a function."""
-    redis = Redis()
-    calls = int(redis.get(fn.__qualname__) or 0)
+    _redis = redis.Redis()
+    calls = int(_redis.get(fn.__qualname__) or 0)
     print(fn.__qualname__, 'was called', calls, 'times')
     lst = zip(
-        redis.lrange(fn.__qualname__ + ':inputs', 0, -1),
-        redis.lrange(fn.__qualname__ + ':outputs', 0, -1))
+        _redis.lrange(fn.__qualname__ + ':inputs', 0, -1),
+        _redis.lrange(fn.__qualname__ + ':outputs', 0, -1))
     for inp, out in lst:
         print(f'{fn.__qualname__}(*({inp.decode()})) -> {out.decode()}')
 
@@ -45,7 +45,7 @@ class Cache:
     """Cache class, a client which connects to reddis"""
     def __init__(self) -> None:
         """Constructor for Cache class."""
-        self._redis = Redis()
+        self._redis = redis.Redis()
         self._redis.flushdb()
 
     @call_history
