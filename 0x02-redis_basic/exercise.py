@@ -27,6 +27,18 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(fn: Callable) -> None:
+    """Prints information about history of calls of a function."""
+    redis = Redis()
+    calls = int(redis.get(fn.__qualname__) or 0)
+    print(fn.__qualname__, 'was called', calls, 'times')
+    lst = zip(
+        redis.lrange(fn.__qualname__ + ':inputs', 0, calls),
+        redis.lrange(fn.__qualname__ + ':outputs', 0, calls))
+    for inp, out in lst:
+        print(f'{fn.__qualname__}(*({inp})) -> {out}')
+
+
 class Cache:
     """Cache class, a client which connects to reddis"""
     def __init__(self) -> None:
