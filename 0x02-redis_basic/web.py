@@ -12,10 +12,17 @@ def count_access(fn: Callable) -> Callable:
 
     @wraps(fn)
     def wrapper(url, *args, **kwargs) -> Any:
-        key = 'count:' + url
-        redis.incr(key)
-        redis.expire(key, 10)
-        return fn(url, *args, **kwargs)
+        count_key = 'count:' + url
+        cache_key = 'cache:' + url
+        redis.incr(count_key)
+        data = redis.get(cache_key)
+        if data:
+            return data
+        else:
+            data = fn(url, *args, **kwargs)
+        redis.set(cache_key, data)
+        redis.expire(cache_key, 10)
+        return data
     return wrapper
 
 
