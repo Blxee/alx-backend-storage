@@ -21,7 +21,6 @@ def count_access(fn: Callable) -> Callable:
             return data.decode()
         data = fn(url, *args, **kwargs)
         _redis.setex(cache_key, 10, data)
-        _redis.set(count_key, 0)
         return data
     return wrapper
 
