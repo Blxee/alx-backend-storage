@@ -6,9 +6,11 @@ import requests
 from typing import Callable, Any
 
 
+_redis = redis.Redis()
+
+
 def count_access(fn: Callable) -> Callable:
     """Decorator function that adds caching for get_page"""
-    _redis = redis.Redis()
 
     @wraps(fn)
     def wrapper(url, *args, **kwargs) -> Any:
