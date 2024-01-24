@@ -15,6 +15,18 @@ def count_calls(method: Callable) -> Callable:
     return wrapper
 
 
+def call_history(method: Callable) -> Callable:
+    """Decorator function that stores in and out of Cache method calls."""
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        input = str(args)
+        output = method(self, *input, **kwargs)
+        self._redis.rpush(method.__qualname__ + ':inputs', input)
+        self._redis.rpush(method.__qualname__ + ':outputs', output)
+        return output
+    return wrapper
+
+
 class Cache:
     """Cache class, a client which connects to reddis"""
     def __init__(self) -> None:
