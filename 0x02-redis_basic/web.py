@@ -20,8 +20,7 @@ def count_access(fn: Callable) -> Callable:
         if data:
             return data.decode()
         data = fn(url, *args, **kwargs)
-        _redis.set(cache_key, data)
-        _redis.expire(cache_key, 10)
+        _redis.setex(cache_key, 10, data)
         return data
     return wrapper
 
