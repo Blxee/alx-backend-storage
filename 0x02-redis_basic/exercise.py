@@ -18,9 +18,17 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable | None = None) -> bytes | None:
+    def get(self, key: str, fn: Callable | None = None) -> Any | None:
         """Retrieves data from redis using a key, and a convertion function."""
         if fn:
             return fn(self._redis.get(key))
         else:
             return self._redis.get(key)
+
+    def get_str(self, key: str) -> str | None:
+        "Retrieves a string from reddis"
+        return self.get(key, str)
+
+    def get_int(self, key: str) -> int | None:
+        "Retrieves a int from reddis"
+        return self.get(key, int)
