@@ -22,4 +22,4 @@ def count_access(fn: Callable) -> Callable:
 @count_access
 def get_page(url: str) -> str:
     """Retrieves the content of an html page."""
-    return requests.get(url, timeout=10).text
+    return requests.get(url).text

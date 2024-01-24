@@ -9,7 +9,7 @@ from uuid import uuid4
 def count_calls(method: Callable) -> Callable:
     """Decorator function that counts calls of Cache method calls."""
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs) -> Any:
         self._redis.incr(method.__qualname__)
         return method(self, *args, **kwargs)
     return wrapper
@@ -18,7 +18,7 @@ def count_calls(method: Callable) -> Callable:
 def call_history(method: Callable) -> Callable:
     """Decorator function that stores in and out of Cache method calls."""
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs) -> Any:
         input = str(args)
         output = method(self, *input, **kwargs)
         self._redis.rpush(method.__qualname__ + ':inputs', input)
