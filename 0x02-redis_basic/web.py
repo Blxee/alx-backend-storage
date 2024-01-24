@@ -8,6 +8,7 @@ from typing import Callable, Any
 
 def count_access(fn: Callable) -> Callable:
     redis = Redis()
+
     @wraps(fn)
     def wrapper(url, *args, **kwargs) -> Any:
         key = 'count:' + url
