@@ -48,6 +48,7 @@ class Cache:
         self._redis = Redis()
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Any) -> str:
         """Stores data in redis using a key."""
