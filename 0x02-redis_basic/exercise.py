@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 """Main module for all mandatory tasks."""
+from functools import wraps
 from redis import Redis
 from typing import Any, Callable
 from uuid import uuid4
+
+
+def count_calls(method: Callable) -> Callable:
+    """Decorator function that counts calls of Cache method calls."""
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        self._redis.incr(method.__qualname__)
+        return method(self, *args, **kwargs)
+    return wrapper
 
 
 class Cache:
@@ -12,6 +22,7 @@ class Cache:
         self._redis = Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Any) -> str:
         """Stores data in redis using a key."""
         key = str(uuid4())
