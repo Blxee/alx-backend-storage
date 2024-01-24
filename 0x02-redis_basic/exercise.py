@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Main module for all mandatory tasks."""
 from redis import Redis
+from typing import Any
 from uuid import uuid4
 
 
@@ -11,7 +12,7 @@ class Cache:
         self._redis = Redis()
         self._redis.flushdb()
 
-    def store(self, data: str | bytes | int | float) -> str:
+    def store(self, data: Any) -> str:
         """Stores data in redis using a key."""
         key = str(uuid4())
         self._redis.set(key, data)
