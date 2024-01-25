@@ -50,7 +50,7 @@ class Cache:
 
     @call_history
     @count_calls
-    def store(self, data: Any) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data in redis using a key."""
         key = str(uuid4())
         self._redis.set(key, data)
