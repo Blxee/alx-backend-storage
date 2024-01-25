@@ -48,8 +48,8 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    @call_history
     @count_calls
+    @call_history
     def store(self, data: Any) -> str:
         """Stores data in redis using a key."""
         key = str(uuid4())
