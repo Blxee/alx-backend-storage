@@ -12,6 +12,8 @@ def count_calls(method: Callable) -> Callable:
     def wrapper(self, *args, **kwargs) -> Any:
         """why does this need docs?"""
         self._redis.incr(method.__qualname__)
+        if method.__qualname__.endswith('store'):
+            return method(self, args[0])
         return method(self, *args, **kwargs)
     return wrapper
 
