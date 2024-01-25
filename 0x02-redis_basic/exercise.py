@@ -24,7 +24,10 @@ def call_history(method: Callable) -> Callable:
     def wrapper(self, *args, **kwargs) -> Any:
         """it will be overwitten anyway"""
         input = str(args)
-        output = str(method(self, *input, **kwargs))
+        if method.__qualname__.endswith('store'):
+            output = str(method(self, input[0]))
+        else:
+            output = str(method(self, *input, **kwargs))
         self._redis.rpush(method.__qualname__ + ':inputs', input)
         self._redis.rpush(method.__qualname__ + ':outputs', output)
         return output
