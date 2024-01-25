@@ -9,20 +9,20 @@ from uuid import uuid4
 def count_calls(method: Callable) -> Callable:
     """Decorator function that counts calls of Cache method calls."""
     @wraps(method)
-    def wrapper(self, *args, **kwargs) -> Any:
+    def wrapper(self, arg) -> Any:
         """why does this need docs?"""
         self._redis.incr(method.__qualname__)
-        return method(self, *args, **kwargs)
+        return method(self, arg)
     return wrapper
 
 
 def call_history(method: Callable) -> Callable:
     """Decorator function that stores in and out of Cache method calls."""
     @wraps(method)
-    def wrapper(self, *args, **kwargs) -> Any:
+    def wrapper(self, *args) -> Any:
         """it will be overwitten anyway"""
         input = str(args)
-        output = str(method(self, *input, **kwargs))
+        output = str(method(self, *input))
         self._redis.rpush(method.__qualname__ + ':inputs', input)
         self._redis.rpush(method.__qualname__ + ':outputs', output)
         return output
@@ -50,7 +50,7 @@ class Cache:
 
     @call_history
     @count_calls
-    def store(self, data: Any) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data in redis using a key."""
         key = str(uuid4())
         self._redis.set(key, data)
